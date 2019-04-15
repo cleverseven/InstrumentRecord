@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:命名空间-->
+<mapper namespace="com.tianhe.dao.GasDao">
+    <select id="queryNum" resultType="Charts">
+    SELECT COUNT(*) as num , date_format(upload_date,'%Y-%m-%d') as day FROM gas_history_log WHERE upload_date BETWEEN #{startTime} AND #{overTime} and device_addr =#{clockNum} GROUP BY date_format(upload_date,'%Y-%m-%d');
+    </select>
+    <select id="queryAll" resultType="Charts">
+    SELECT COUNT(*) as num , date_format(upload_date,'%Y-%m-%d') as day FROM gas_history_log WHERE upload_date BETWEEN #{startTime} AND #{overTime} GROUP BY date_format(upload_date,'%Y-%m-%d');
+    </select>
+    <select id="clockSum" resultType="int">
+    SELECT COUNT(*) FROM gas_history_log GROUP BY device_addr;
+    </select>
+    <select id="queryAvg" resultType="ClockVoltageAvg">
+    SELECT AVG(main_circuit_voltage) as avg , date_format(upload_date,'%Y-%m-%d') as day ,device_addr FROM gas_history_log WHERE upload_date BETWEEN #{startTime} AND #{overTime} and device_addr =#{clockNum}  GROUP BY date_format(upload_date,'%Y-%m-%d'),device_addr;
+    </select>
+</mapper>
